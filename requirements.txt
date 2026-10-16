@@ -1,0 +1,6 @@
+PySide6
+pandas
+openpyxl
+scikit-learn
+shap
+matplotlib
