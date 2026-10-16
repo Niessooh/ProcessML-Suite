@@ -66,7 +66,7 @@ example_randomforest.py
 
 example_output_form.py
 
-generated outputs/
+example of generated outputs/
 
 fullmehr__xgboost__20261014_033501.pdf
 
