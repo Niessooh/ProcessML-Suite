@@ -56,9 +56,13 @@ requirements.txt
 
 examples/
 
+example_data.xlsx
+
 example_data_processor.py
 
-example_model.py
+example_xgboost.py
+
+example_randomforest.py
 
 example_output_form.py
 
