@@ -238,7 +238,7 @@ class Ui_Form(object):
         self.groupBox.setTitle("")
         self.radioButton.setText(QCoreApplication.translate("Form", u"Add to existing Dataset", None))
         self.groupBox_2.setTitle("")
-        self.radioButton_2.setText(QCoreApplication.translate("Form", u"Creat new Dataset", None))
+        self.radioButton_2.setText(QCoreApplication.translate("Form", u"Create new Dataset", None))
         self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("Form", u"Dataset name", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Select Data Processor", None))
         self.groupBox_3.setTitle("")
