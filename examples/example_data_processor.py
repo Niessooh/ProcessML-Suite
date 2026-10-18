@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 
 def process(file_path):
@@ -15,14 +14,13 @@ def process(file_path):
     df_data['Feature'] = df_data['Feature'].astype(str).str.strip()
 
     df_melted = df_data.melt(id_vars=['Feature'], var_name='Time', value_name='Value')
-    # استفاده از drop=True برای جلوگیری از تبدیل شدن Time به ستون
     df_pivot = df_melted.pivot(index='Time', columns='Feature', values='Value').reset_index(drop=True)
 
-    # ۳. استانداردسازی نوع تمام داده‌ها به عددی
+    # ۳. تبدیل مقادیر به عددی (مقادیر غیرعددی خودکار حذف و به NaN تبدیل می‌شوند)
     for col in df_pivot.columns:
         df_pivot[col] = pd.to_numeric(df_pivot[col], errors='coerce')
 
-    # ۴. تنظیم متغیر هدف و حذف داده‌های فاقد برچسب
+    # ۴. تنظیم متغیر هدف و حذف سطرهای فاقد متغیر هدف (برچسب)
     target_col_raw = 'درصد سرب آزاد'
     if target_col_raw in df_pivot.columns:
         df_pivot.rename(columns={target_col_raw: 'target'}, inplace=True)
@@ -44,17 +42,10 @@ def process(file_path):
         if col == 'target':
             valid_cols.append(col)
             continue
-        # بررسی اینکه آیا ستون فعلی جزو متغیرهای مجاز هست یا خیر
         if any(keyword in str(col).replace(' ', '') for keyword in [k.replace(' ', '') for k in keep_keywords]):
             valid_cols.append(col)
 
     df_filtered = df_pivot[valid_cols].copy()
 
-    # ۶. ترمیم داده‌های گمشده (Data Imputation)
-    numeric_cols = df_filtered.select_dtypes(include=[np.number]).columns
-    impute_cols = [c for c in numeric_cols if c != 'target']
-
-    df_filtered[impute_cols] = df_filtered[impute_cols].fillna(df_filtered[impute_cols].mean())
-    df_filtered[impute_cols] = df_filtered[impute_cols].fillna(0)
-
+    # خروجی خام بدون دستکاری و بدون جایگذاری مقادیر NaN
     return df_filtered
