@@ -401,9 +401,22 @@ class MainWindow(QWidget):
                 self.log(console, f"Target column '{target}' not found in dataset '{ds_name}'.")
                 return
 
+            target = 'target'
             X = df.drop(columns=[target])
             y = df[target]
+
+            # ۲. تقسیم داده‌ها به آموزش و تست (قبل از هرگونه محاسبه میانگین)
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+            # ۳. تعریف Imputer برای جایگذاری مقادیر NaN با میانگین
+            imputer = SimpleImputer(strategy='mean')
+            imputer.set_output(transform="pandas")  # حفظ ساختار دیتافریم و نام ستون‌ها
+
+            # ۴. محاسبه میانگین فقط روی X_train و اعمال آن
+            X_train = imputer.fit_transform(X_train)
+
+            # ۵. اعمال میانگین‌های محاسبه‌شده مرحله قبل روی X_test (بدون fit مجدد)
+            X_test = imputer.transform(X_test)
 
             self.log(console, "Training model...")
             base_model = model_module.build_model()
