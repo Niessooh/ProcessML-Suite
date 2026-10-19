@@ -35,6 +35,7 @@ from datetime import datetime
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.impute import SimpleImputer 
 
 from PySide6.QtWidgets import QApplication, QWidget, QFileDialog, QButtonGroup
 
